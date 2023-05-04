@@ -1,0 +1,26 @@
+import requests
+import pandas as pd
+import re
+
+res = requests.get("http://isin.twse.com.tw/isin/C_public.jsp?strMode=2")
+df = pd.read_html(res.text)[0]
+
+'''
+stackCodeDict = {}
+for code, market in zip(df['有價證券代號及名稱'], df['市場別']):
+    stackCode = code.split('　')
+    if stackCode[0] and re.search(r"^[0-9A-Z]{4,6}$", stackCode[0]):
+        stackCodeDict[stackCode[0]] = market
+'''
+
+stackCodeDict = {}
+for code in df['有價證券代號及名稱']:
+    stackCode = code.split('　')
+    if stackCode[0] and re.search(r"^[0-9A-Z]{4,6}$", stackCode[0]):
+        print(str(stackCode[0]) + stackCode[1])
+        stackCodeDict[stackCode[0]] = stackCode[1]
+
+# 將 stackCodeDict 字典儲存為 CSV 檔案
+df = pd.DataFrame.from_dict(stackCodeDict, orient='index', columns=['股票代號'])
+df.index.name = '股票名稱'
+df.to_csv('C://Users//small//Downloads//stock_codes_8.csv', encoding='utf_8_sig')
