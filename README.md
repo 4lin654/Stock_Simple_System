@@ -1,5 +1,5 @@
 # Stock_Simple_System
-
+當輸入股票
 
 # Source
  * [證交所即時資訊API](https://zys-notes.blogspot.com/2020/01/api.html)
